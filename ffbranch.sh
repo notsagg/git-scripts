@@ -11,6 +11,9 @@ if [ $# -ne 1 ]; then
     exit 1
 fi
 
+# get current branch
+obranch=$(git branch | grep "*" | sed -n -e 's/^\* \(.*\)/\1/p')
+
 # check that argument is a branch
 isbranch=0 # whether $1 is an existing branch
 for branch in $(git branch); do
@@ -20,8 +23,11 @@ for branch in $(git branch); do
         # checkout $1
         git checkout $1 > /dev/null 2>&1
 
-        # pull for changes
+        # pull origin/$1 for changes
         git pull > /dev/null 2>&1
+
+        # push $1 to origin/$1
+        git push > /dev/null 2>&1
     fi
 done
 
@@ -29,9 +35,6 @@ if [ $isbranch -ne 1 ]; then
     printf "$CL_OPEN$RED'$1' is not a branch $CL_CLOSING" 1>&2
     exit 1
 fi
-
-# get current branch
-obranch=$(git branch | grep "*" | sed -n -e 's/^\* \(.*\)/\1/p')
 
 # fast-forward every branches to $1
 for branch in $(git branch); do
