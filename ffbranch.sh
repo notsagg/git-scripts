@@ -1,20 +1,17 @@
 #!/bin/bash
 
-# ANSI color escape codes
-CL_OPEN="\e[1;" # opening color espace code
-CL_CLOSING="\e[0m\n" # closing color espace code
-RED="31m" # the red color
+source $(dirname "$0")/config/config.dat
 
-# check for argument
+# 1. check for argument
 if [ $# -ne 1 ]; then
     printf "$CL_OPEN$RED Fast-forward branch argument required $CL_CLOSING" 1>&2
     exit 1
 fi
 
-# get current branch
+# 2. get current branch
 obranch=$(git branch | grep "*" | sed -n -e 's/^\* \(.*\)/\1/p')
 
-# check that argument is a branch
+# 3. check that argument is a branch
 isbranch=0 # whether $1 is an existing branch
 for branch in $(git branch); do
     if [ $branch == $1 ]; then
@@ -36,7 +33,7 @@ if [ $isbranch -ne 1 ]; then
     exit 1
 fi
 
-# fast-forward every branches to $1
+# 4. fast-forward every branches to $1
 for branch in $(git branch); do
     if [ $branch != $1 ]; then
         echo " -- 1. Checking out branch '$branch'"
@@ -53,5 +50,5 @@ for branch in $(git branch); do
     fi
 done
 
-# checkout out the branch from where the script was first launched
+# 5. checkout out the branch from where the script was first launched
 git checkout $obranch > /dev/null 2>&1

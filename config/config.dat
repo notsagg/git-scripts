@@ -1,0 +1,11 @@
+# ANSI color escape codes
+CL_OPEN="\e[1;"       # opening color espace code
+CL_CLOSING="\e[0m"    # closing color espace code
+
+RED="31m"             # the red color
+GREEN="32m"           # the green color
+YELLOW="33m"          # the yellow color
+BLUE="34m"            # the blue color
+PURPLE="35m"          # the purple color
+CYAN="36m"            # the cyan color
+GRAY="37m"            # the light gray color
