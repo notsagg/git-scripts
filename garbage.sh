@@ -19,7 +19,7 @@ read -p "Do you wish to see the garbage that will be deleted? [Y/n] " verbose
 if [ "$verbose" == "$YES" ]; then
     find . -type d \( -name ".git" \) -prune -false -o \( -name "._*" -o -name ".DS_Store" \)
     printf "\n"
-    read -p "Continue? [Y\n] " forward
+    read -p "Continue? [Y/n] " forward
 
     if [ "$forward" == "$NO" ]; then
         exit 0
@@ -38,3 +38,4 @@ find . -type d \( -name ".git" \) -prune -false -o \( -name "._*" -o -name ".DS_
 
 # 5. exit
 printf "$CL_OPEN$GREEN\nDone\n$CL_CLOSING"
+exit 0
