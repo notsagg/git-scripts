@@ -8,4 +8,5 @@ The ffbranch script takes the name of a branch as a parameter. The script then l
 
 ## Todo
 - [x] Write a commit counter script
+- [x] Enhance the commit counter script to display more about the submodules
 - [ ] Write an Angular source code to project recovery script

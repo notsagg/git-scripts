@@ -2,6 +2,11 @@
 CL_OPEN="\e[1;"       # opening color espace code
 CL_CLOSING="\e[0m"    # closing color espace code
 
+BRIGHT="1m"
+DIM="2m"
+ITALIC="3m"
+UNDERSCORE="4m"
+
 RED="31m"             # the red color
 GREEN="32m"           # the green color
 YELLOW="33m"          # the yellow color
