@@ -9,4 +9,6 @@ The ffbranch script takes the name of a branch as a parameter. The script then l
 ## Todo
 - [x] Write a commit counter script
 - [x] Enhance the commit counter script to display more about the submodules
+- [x] Update the cmcount script to include multiple versions of the same submodule
 - [ ] Write an Angular source code to project recovery script
+- [ ] Update this README.md with an explanation of the scripts in this repository
