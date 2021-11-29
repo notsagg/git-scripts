@@ -4,7 +4,6 @@ source $(dirname "$0")/config/config.dat
 declare -i var total=0 # total all time
 declare -i var today=0 # total today
 declare -i var yesterday=0 # total yesterday
-BASE_DIR=$(pwd)
 ALL_COMMITS="git rev-list --count --all"
 IS_GIT_REPO="ls -la | grep .git | wc -l | sed 's/[[:blank:]]//g'"
 SUBMODULES="git config --file .gitmodules --get-regexp path | awk '{ print \$2 }' | rev | cut -d'/' -f1 | rev"
@@ -47,20 +46,24 @@ function commitCount {
     fi
 }
 
-# 1. check that the garbage.sh script is not being run from its own directory
-if [ $(dirname "$0") == "."  ]; then
-    printf "$CL_OPEN$RED\nerror: cmcount.sh run in its own directory\n$CL_CLOSING"
+# 1. get the name of the base repository
+if [[ $# -eq 1 ]]; then
+    BASE_DIR=$1
+
+    # a. exit if the given path doesn't exist
+    if ! cd $BASE_DIR 2>/dev/null; then
+        printf "$CL_OPEN$RED\nerror: path \`$BASE_DIR\` does not seem to exist\n$CL_CLOSING"
+        exit 1
+    fi
+
+    # b. otherwise extract the directory at the given path
+    BASE_REPO=$(echo $(pwd) | rev | cut -d'/' -f1 | rev)
+else
+    printf "$CL_OPEN$RED\nerror: expecting main repository path as argument\n$CL_CLOSING"
     exit 1
 fi
 
-# 2. get the name of the base repository
-BASE_REPO=$(git remote -v | cut -d'/' -f2 | cut -d'.' -f1 | head -n1)
-
-if [[ $BASE_REPO == '' ]]; then
-    BASE_REPO=$(basename `git rev-parse --show-toplevel`)
-fi
-
-# 3. get the number of commits in the main repository
+# 2. get the number of commits in the main repository
 printf "$CL_OPEN$BRIGHT\n ----------------- $BASE_REPO ----------------- \n\n$CL_CLOSING"
 commitCount # commit count today, yesterday, week, month, year, last year
 
@@ -74,7 +77,7 @@ if [[ $date != '' ]]; then
 fi
 printf "\n"
 
-# 4. get the commit count for each submodule
+# 3. get the commit count for each submodule
 SUB_COUNT="eval $SUBMODULES | wc -l | sed 's/[[:blank:]]//g'"
 
 if [ $(eval $SUB_COUNT) -gt 0 ]; then
@@ -118,7 +121,7 @@ if [ $(eval $SUB_COUNT) -gt 0 ]; then
     done
 fi
 
-# 5. echo the total number of commits
+# 4. echo the total number of commits
 printf "$CL_OPEN$BRIGHT\n ----------------- Total ----------------- \n$CL_CLOSING"
 cd $BASE_DIR
 printf "\n => $CL_OPEN$BRIGHT$total commits $CL_CLOSING"
